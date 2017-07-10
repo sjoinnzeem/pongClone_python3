@@ -22,7 +22,6 @@ class Paddle(object):
 
     def draw(self):
         """Draws the paddle to the display"""
-        #self.paddleYPos += self.direction
         self.move(self.direction)
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.paddleXPos, self.paddleYPos, self.paddleWidth, self.paddleHeight])
 
@@ -44,6 +43,8 @@ class Paddle(object):
             self.paddleYPos = self.paddleYPos - pixels
 
     def move(self, direction):
+        """Moves the paddle up or down
+        needs a negative number for up and a positive for down"""
         self.direction = direction
         self.paddleYPos += self.direction
         if self.paddleYPos <= 100:
