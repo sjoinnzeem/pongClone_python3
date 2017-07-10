@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """ Pong Clone made by Me with pygame"""
-#a test for gihub
 
 import pygame
 import random
