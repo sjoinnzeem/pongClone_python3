@@ -5,10 +5,18 @@ import pygame
 import random
 from random import randint
 
-class Field:
+class Court:
     """Holds the size and position of the field"""
     #Maybe it should be a function instead
-    pass
+    def __init__(self, gameDisplay, courtXPos, courtYPos, courtWidth, courtHeight):
+        self.courtXPos = courtXPos
+        self.courtYPos = courtYPos
+        self.courtWidth = courtWidth
+        self.courtHeight = courtHeight
+        self.gameDisplay = gameDisplay
+
+    def draw(self):
+        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.courtXPos, self.courtYPos, self.courtWidth, self.courtHeight])
 
 class Paddle(object):
     """Holds size and position of the paddle also moves and draws it to the display"""
