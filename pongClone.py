@@ -5,18 +5,19 @@ import pygame
 import random
 from random import randint
 
-class Court:
+class Field:
     """Holds the size and position of the field"""
     #Maybe it should be a function instead
-    def __init__(self, gameDisplay, courtXPos, courtYPos, courtWidth, courtHeight):
-        self.courtXPos = courtXPos
-        self.courtYPos = courtYPos
-        self.courtWidth = courtWidth
-        self.courtHeight = courtHeight
+    def __init__(self, gameDisplay, fieldXPos, fieldYPos, fieldWidth, fieldHeight, fieldBorderSize):
+        self.fieldXPos = fieldXPos
+        self.fieldYPos = fieldYPos
+        self.fieldWidth = fieldWidth
+        self.fieldHeight = fieldHeight
+        self.fieldBorderSize = fieldBorderSize
         self.gameDisplay = gameDisplay
 
     def draw(self):
-        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.courtXPos, self.courtYPos, self.courtWidth, self.courtHeight])
+        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
 
 class Paddle(object):
     """Holds size and position of the paddle also moves and draws it to the display"""
@@ -57,8 +58,8 @@ class Paddle(object):
         if self.paddleYPos <= 100:
             self.paddleYPos = 100
             self.direction = 0
-        if self.paddleYPos >= 400:
-            self.paddleYPos = 400
+        if self.paddleYPos >= 490:
+            self.paddleYPos = 490
             self.direction = 0
         
     @property
@@ -132,10 +133,13 @@ def main():
     clock = pygame.time.Clock()
     gameExit = False
     gameDisplay = pygame.display.set_mode((800, 600))
+    paddleWidth = 10
+    paddleHeight = 100
     xPos = 400
     yPos = 300
-    player1 = Paddle(gameDisplay, 50, 250, 10, 100)
-    player2 = Paddle(gameDisplay, 750, 250, 10, 100)
+    court = Field(gameDisplay, 8,98, 782, 492, 2)
+    player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
+    player2 = Paddle(gameDisplay, 750, 250, paddleWidth, paddleHeight)
     ball = Ball(gameDisplay, 300, 300, 1, 1)
     players = (player1, player2)
     player1.draw()
@@ -173,7 +177,8 @@ def main():
                 
 
         gameDisplay.fill((0, 0, 0))
-        pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10])        
+        court.draw()
+        pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 ##        player1.draw()
 ##        player2.draw()
         for player in players:
@@ -183,6 +188,7 @@ def main():
         if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
             print('collision')
         ball.draw()
+        
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
