@@ -109,11 +109,16 @@ def windowSetup():
 def score():
     pass
 
+def texts(gameDisplay, score):
+   font=pygame.font.Font(None,30)
+   scoretext=font.render("Score:"+str(score), 1,(255,255,255))
+   gameDisplay.blit(scoretext, (500, 457))
+
 def collision_handler(ball, player1, player2, players):
     if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
         #self.xDirection = -self.xDirection
         print('collision_handler')
-##    if ball.rect.collidelist(players):
+##    if ball.rect.collidelist(game):
 ##        print('collision_list')
     if ball.rect.collidelist(players) != -1:
         print(ball.rect.collidelist(players))
@@ -134,6 +139,7 @@ def main():
     player1.draw()
     player2.draw()
     ball.draw()
+    texts(gameDisplay, 'hej')
 
     print(randint(0, 10))
     
@@ -166,6 +172,7 @@ def main():
                 
 
         gameDisplay.fill((0, 0, 0))
+        texts(gameDisplay, 'hej')
         pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10])        
 ##        player1.draw()
 ##        player2.draw()
