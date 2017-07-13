@@ -18,7 +18,7 @@ class Field:
 
     def draw(self):
         """Draws the field to the gameDisplay"""
-        pygame.draw.rectself.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
+        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
 
     def score(self, player1Score, player2Score):
         """Handels the score of the players"""
