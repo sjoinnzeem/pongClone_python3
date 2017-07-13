@@ -17,7 +17,17 @@ class Field:
         self.gameDisplay = gameDisplay
 
     def draw(self):
-        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
+        """Draws the field to the gameDisplay"""
+        pygame.draw.rectself.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
+
+    def score(self, player1Score, player2Score):
+        """Handels the score of the players"""
+        self.player1Score = player1Score
+        self.player2Score = player2Score
+
+    def drawScore(self):
+        """Draws the score to the screen to the field"""
+        pass
 
 class Paddle(object):
     """Holds size and position of the paddle also moves and draws it to the display"""
@@ -87,9 +97,9 @@ class Ball(object):
             self.xDirection = -self.xDirection
         elif self.ballXPos <= 0:
             self.xDirection = -self.xDirection
-        if self.ballYPos >= 590:
+        if self.ballYPos >= 580:
             self.yDirection = -self.yDirection
-        elif self.ballYPos <= 10:
+        elif self.ballYPos <= 100:
             self.yDirection = -self.yDirection
         if self.rect.collidelist(obstacles) != -1:
             print('test')
