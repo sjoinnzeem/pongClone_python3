@@ -25,9 +25,15 @@ class Field:
         self.player1Score = player1Score
         self.player2Score = player2Score
 
+    def addScore(self):
+        pass
+    
     def drawScore(self):
         """Draws the score to the screen to the field"""
-        pass
+        font=pygame.font.Font(None,100)
+        scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player1Score), 1,(255,255,255))
+        self.gameDisplay.blit(scoretext, (350, 20))
+        
 
 class Paddle(object):
     """Holds size and position of the paddle also moves and draws it to the display"""
@@ -41,7 +47,6 @@ class Paddle(object):
 
     def draw(self):
         """Draws the paddle to the display"""
-        #self.paddleYPos += self.direction
         self.move(self.direction)
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.paddleXPos, self.paddleYPos, self.paddleWidth, self.paddleHeight])
 
@@ -63,8 +68,8 @@ class Paddle(object):
 class Ball(object):
     """Holds size and position"""
     def __init__(self, gameDisplay, ballXPos, ballYPos, xDirection, yDirection):
-        self.ballXPos = ballXPos
-        self.ballYPos = ballYPos
+        self.ballXPos = self.ballStartXPos = ballXPos
+        self.ballYPos = self.ballStartYPos = ballYPos
         self.gameDisplay = gameDisplay
         self.xDirection = xDirection
         self.yDirection = yDirection
@@ -88,6 +93,11 @@ class Ball(object):
         if self.rect.collidelist(obstacles) != -1:
             self.xDirection = -self.xDirection
 
+    def reset(self):
+        """Resets the ball to start position"""
+        self.ballXPos = self.ballStartXPos
+        self.ballYPos = self.ballStartYPos
+
     @property
     def rect(self):
         return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10)
@@ -100,8 +110,16 @@ def windowSetup():
     windowWidth = 800
     windowHeight = 600
 
-def score():
-    pass
+def score(ballPosition):
+    if ballPosition >=  780:
+        print('player1 score!')
+    if ballPosition <= 10:
+        print('player2 score!')
+
+def texts(gameDisplay, score):
+    font=pygame.font.Font(None,30)
+    scoretext=font.render("Score:"+str(score), 1,(255,255,255))
+    gameDisplay.blit(scoretext, (500, 457))
 
 def main():
     """Pong Clone that uses pygame"""
@@ -115,6 +133,7 @@ def main():
     xPos = 400
     yPos = 300
     court = Field(gameDisplay, 8,98, 782, 492, 2)
+    court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
     player2 = Paddle(gameDisplay, 750, 250, paddleWidth, paddleHeight)
     ball = Ball(gameDisplay, 300, 300, 1, 1)
@@ -155,8 +174,10 @@ def main():
 
         gameDisplay.fill((0, 0, 0))
         court.draw()
+        court.drawScore()
         pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 
+        score(ball.rect[0])
         for player in players:
             player.draw()
         ball.move(players)
