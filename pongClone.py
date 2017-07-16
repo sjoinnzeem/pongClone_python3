@@ -45,24 +45,8 @@ class Paddle(object):
         self.move(self.direction)
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.paddleXPos, self.paddleYPos, self.paddleWidth, self.paddleHeight])
 
-    def draw2(self):
-        """Draws the paddle to the display"""
-        self.paddleYPos += 5
-        pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.paddleXPos, self.paddleYPos, self.paddleWidth, self.paddleHeight])
-        
-    def moveUp(self, pixels):
-        """Moves the paddle up to the top of the field and not above it"""
-        self.paddleYPos -= pixels
-        if self.paddleYPos <= 100:
-            self.paddleYPos = self.paddleYPos + pixels
-
-    def moveDown(self, pixels):
-        """Moves the paddle down to the bottom of the field and not below it"""
-        self.paddleYPos += pixels
-        if self.paddleYPos >= 500:
-            self.paddleYPos = self.paddleYPos - pixels
-
     def move(self, direction):
+        """Moves the paddle according to direction"""
         self.direction = direction
         self.paddleYPos += self.direction
         if self.paddleYPos <= 100:
@@ -102,15 +86,7 @@ class Ball(object):
         elif self.ballYPos <= 100:
             self.yDirection = -self.yDirection
         if self.rect.collidelist(obstacles) != -1:
-            print('test')
             self.xDirection = -self.xDirection
-            
-    
-    def moveUp(self, pixels):
-        self.ballYPos -= pixels
-
-    def moveDown(self, pixels):
-        self.ballYPos += pixels
 
     @property
     def rect(self):
@@ -126,15 +102,6 @@ def windowSetup():
 
 def score():
     pass
-
-def collision_handler(ball, player1, player2, players):
-    if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
-        #self.xDirection = -self.xDirection
-        print('collision_handler')
-##    if ball.rect.collidelist(players):
-##        print('collision_list')
-    if ball.rect.collidelist(players) != -1:
-        print(ball.rect.collidelist(players))
 
 def main():
     """Pong Clone that uses pygame"""
@@ -169,34 +136,30 @@ def main():
                     xPos += 5
                 elif event.key == pygame.K_UP:
                     yPos -= 5
-                    player1.moveUp(5)
+                    player1.move(-5)
                     player2.move(-5)
                 elif event.key == pygame.K_DOWN:
                     yPos += 5
-                    player1.moveDown(5)
+                    player1.move(5)
                     player2.move(5)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
                     yPos -= 5
-                    player1.moveUp(5)
+                    player1.move(0)
                     player2.move(0)
                 elif event.key == pygame.K_DOWN:
                     yPos += 5
-                    player1.moveDown(5)
+                    player1.move(0)
                     player2.move(0)
                 
 
         gameDisplay.fill((0, 0, 0))
         court.draw()
         pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
-##        player1.draw()
-##        player2.draw()
+
         for player in players:
             player.draw()
         ball.move(players)
-        collision_handler(ball, player1, player2, players)
-        if ball.rect.colliderect(player1.rect) or ball.rect.colliderect(player2.rect):
-            print('collision')
         ball.draw()
         
         pygame.display.update()
