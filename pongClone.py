@@ -12,6 +12,7 @@ class Field:
                  fieldXPos, fieldYPos,
                  fieldWidth, fieldHeight,
                  fieldBorderSize):
+        
         self.fieldXPos = fieldXPos
         self.fieldYPos = fieldYPos
         self.fieldWidth = fieldWidth
@@ -111,9 +112,7 @@ class Ball(object):
     
 def windowSetup():
     """Setting all initial variables and functions for start up"""
-    
     pygame.display.set_caption('Pong Clone')
-    
     windowWidth = 800
     windowHeight = 600
 
