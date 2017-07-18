@@ -8,7 +8,10 @@ from random import randint
 class Field:
     """Holds the size and position of the field"""
     #Maybe it should be a function instead
-    def __init__(self, gameDisplay, fieldXPos, fieldYPos, fieldWidth, fieldHeight, fieldBorderSize):
+    def __init__(self, gameDisplay,
+                 fieldXPos, fieldYPos,
+                 fieldWidth, fieldHeight,
+                 fieldBorderSize):
         self.fieldXPos = fieldXPos
         self.fieldYPos = fieldYPos
         self.fieldWidth = fieldWidth
@@ -73,6 +76,8 @@ class Ball(object):
         self.gameDisplay = gameDisplay
         self.xDirection = xDirection
         self.yDirection = yDirection
+        self.xSpeed = 5
+        self.ySpeed = 5
 
     def draw(self):
         """Draws the ball to the screen"""
@@ -80,12 +85,14 @@ class Ball(object):
 
     def move(self, obstacles):
         """Direction and speed of the ball"""
-        self.ballXPos = self.ballXPos + (5 * self.xDirection)
-        self.ballYPos = self.ballYPos + (5 * self.yDirection)
+        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
+        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
         if self.ballXPos >= 800:
             self.xDirection = -self.xDirection
+            self.reset()
         elif self.ballXPos <= 0:
             self.xDirection = -self.xDirection
+            self.reset()
         if self.ballYPos >= 580:
             self.yDirection = -self.yDirection
         elif self.ballYPos <= 100:
@@ -115,7 +122,7 @@ def score(ballPosition):
         print('player1 score!')
     if ballPosition <= 10:
         print('player2 score!')
-
+        
 def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
     scoretext=font.render("Score:"+str(score), 1,(255,255,255))
@@ -149,7 +156,9 @@ def main():
             if event.type == pygame.QUIT:
                 gameExit = True
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_ESCAPE:
+                    gameExit = True
+                elif event.key == pygame.K_LEFT:
                     xPos -= 5
                 elif event.key == pygame.K_RIGHT:
                     xPos += 5
