@@ -22,7 +22,7 @@ class Field:
 
     def draw(self):
         """Draws the field to the gameDisplay"""
-        pygame.draw.rect(self.gameDisplay, (0,0,255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
+        pygame.draw.rect(self.gameDisplay, (0, 0, 255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
 
     def score(self, player1Score, player2Score):
         """Handels the score of the players"""
@@ -34,8 +34,8 @@ class Field:
     
     def drawScore(self):
         """Draws the score to the screen to the field"""
-        font=pygame.font.Font(None,100)
-        scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player1Score), 1,(255,255,255))
+        font=pygame.font.Font(None, 100)
+        scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player1Score), 1, (255, 255, 255))
         self.gameDisplay.blit(scoretext, (350, 20))
         
 
@@ -88,10 +88,12 @@ class Ball(object):
         """Direction and speed of the ball"""
         self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
         self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
-        if self.ballXPos >= 800:
+        if self.ballXPos >= 780:
+            print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.reset()
-        elif self.ballXPos <= 0:
+        elif self.ballXPos <= 10:
+            print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.reset()
         if self.ballYPos >= 580:
@@ -117,10 +119,12 @@ def windowSetup():
     windowHeight = 600
 
 def score(ballPosition):
-    if ballPosition >=  780:
+    if ballPosition >= 775:
         print('player1 score!')
-    if ballPosition <= 10:
+        print(ballPosition)
+    elif ballPosition <= 15:
         print('player2 score!')
+        print(ballPosition)
         
 def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
