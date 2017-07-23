@@ -22,19 +22,21 @@ class Field:
 
     def draw(self):
         """Draws the field to the gameDisplay"""
-        pygame.draw.rect(self.gameDisplay, (0, 0, 255), [self.fieldXPos, self.fieldYPos, self.fieldWidth, self.fieldHeight], self.fieldBorderSize)
+        pygame.draw.rect(self.gameDisplay, (0, 0, 255),
+                         [self.fieldXPos, self.fieldYPos,
+                          self.fieldWidth, self.fieldHeight],
+                        self.fieldBorderSize)
 
     def score(self, player1Score, player2Score):
         """Handels the score of the players"""
         self.player1Score = player1Score
         self.player2Score = player2Score
 
-    def addScore(self, playerScore):
+    def addScore(self, ballPosition):
         """Add a score to the current standing in the match"""
-        if playerScore == 1:
+        if ballPosition >= 775:
             self.player1Score += 1
-            print(self.player1Score)
-        elif playerScore == 2:
+        elif ballPosition <= 15:
             self.player2Score += 1
     
     def drawScore(self):
@@ -122,16 +124,6 @@ def windowSetup():
     pygame.display.set_caption('Pong Clone')
     windowWidth = 800
     windowHeight = 600
-
-def score(ballPosition):
-    if ballPosition >= 775:
-        print('player1 score!')
-        print(ballPosition)
-        return int(1)
-    elif ballPosition <= 15:
-        print('player2 score!')
-        print(ballPosition)
-        return int(2)
         
 def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
@@ -153,7 +145,7 @@ def main():
     court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
     player2 = Paddle(gameDisplay, 750, 250, paddleWidth, paddleHeight)
-    ball = Ball(gameDisplay, 300, 300, 1, 1)
+    ball = Ball(gameDisplay, 400, 295, 1, 1)
     players = (player1, player2)
     player1.draw()
     player2.draw()
@@ -202,8 +194,8 @@ def main():
             player.draw()
         ball.move(players)
         ball.draw()
-        standing = score(ball.rect[0])
-        court.addScore(standing)
+
+        court.addScore(ball.rect[0])
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
