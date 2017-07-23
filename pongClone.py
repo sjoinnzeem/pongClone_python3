@@ -29,13 +29,18 @@ class Field:
         self.player1Score = player1Score
         self.player2Score = player2Score
 
-    def addScore(self):
-        pass
+    def addScore(self, playerScore):
+        """Add a score to the current standing in the match"""
+        if playerScore == 1:
+            self.player1Score += 1
+            print(self.player1Score)
+        elif playerScore == 2:
+            self.player2Score += 1
     
     def drawScore(self):
         """Draws the score to the screen to the field"""
         font=pygame.font.Font(None, 100)
-        scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player1Score), 1, (255, 255, 255))
+        scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player2Score), 1, (255, 255, 255))
         self.gameDisplay.blit(scoretext, (350, 20))
         
 
@@ -122,9 +127,11 @@ def score(ballPosition):
     if ballPosition >= 775:
         print('player1 score!')
         print(ballPosition)
+        return int(1)
     elif ballPosition <= 15:
         print('player2 score!')
         print(ballPosition)
+        return int(2)
         
 def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
@@ -186,15 +193,17 @@ def main():
 
         gameDisplay.fill((0, 0, 0))
         court.draw()
+
         court.drawScore()
         pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 
-        score(ball.rect[0])
+
         for player in players:
             player.draw()
         ball.move(players)
         ball.draw()
-        
+        standing = score(ball.rect[0])
+        court.addScore(standing)
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
