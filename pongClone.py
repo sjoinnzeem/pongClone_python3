@@ -119,6 +119,10 @@ class Ball(object):
     def rect(self):
         return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10)
     
+class WinnerScreen(object):
+    """Shows the winner and restarts the game"""
+    pass
+
 def windowSetup():
     """Setting all initial variables and functions for start up"""
     pygame.display.set_caption('Pong Clone')
