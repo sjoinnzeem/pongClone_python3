@@ -108,8 +108,13 @@ class Ball(object):
         elif self.ballYPos <= 100:
             self.yDirection = -self.yDirection
         if self.rect.collidelist(obstacles) != -1:
-            self.xDirection = -self.xDirection
-            self.yDirection = -self.yDirection
+            """collition between ball and paddle"""
+            if self.ballXPos <= 50 or self.ballXPos >= 750:
+                self.xDirection = self.xDirection
+                self.yDirection = -self.yDirection
+            elif self.ballXPos >= 51 or self.ballXPos <=751:
+              self.xDirection = -self.xDirection
+        
 
     def reset(self):
         """Resets the ball to start position"""
