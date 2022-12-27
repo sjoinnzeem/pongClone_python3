@@ -69,7 +69,7 @@ class Paddle(object):
             self.paddleYPos = 100
             self.direction = 0
         if self.paddleYPos >= 490:
-            self.paddleYPos = 490
+            self.paddleYPos = 488
             self.direction = 0
         
     @property
@@ -109,6 +109,7 @@ class Ball(object):
             self.yDirection = -self.yDirection
         if self.rect.collidelist(obstacles) != -1:
             self.xDirection = -self.xDirection
+            self.yDirection = -self.yDirection
 
     def reset(self):
         """Resets the ball to start position"""
