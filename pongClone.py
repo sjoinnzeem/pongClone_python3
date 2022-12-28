@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Pong Clone made by Me with pygame"""
+""" Pong Clone made by sjoinnzeem with pygame"""
 
 import pygame
 import random
@@ -151,11 +151,12 @@ def main():
     court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
     player2 = Paddle(gameDisplay, 750, 250, paddleWidth, paddleHeight)
-    ball = Ball(gameDisplay, 400, 295, 1, 1)
-    players = (player1, player2)
+    ball0 = Ball(gameDisplay, 400, 295, 1, 1)
+    players = [player1, player2]
+    balls = [ball0]
     player1.draw()
     player2.draw()
-    ball.draw()
+    ball0.draw()
 
     print(randint(0, 10))
     
@@ -170,6 +171,7 @@ def main():
                     xPos -= 5
                 elif event.key == pygame.K_RIGHT:
                     xPos += 5
+                    balls.append(Ball(gameDisplay, 400, 295, 1, 1))
                 elif event.key == pygame.K_UP:
                     yPos -= 5
                     player1.move(-5)
@@ -198,8 +200,11 @@ def main():
 
         for player in players:
             player.draw()
+        
+        for ball in balls:
+            ball.draw()
         ball.move(players)
-        ball.draw()
+        #ball.draw()
 
         court.addScore(ball.rect[0])
         pygame.display.update()
