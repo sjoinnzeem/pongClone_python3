@@ -203,7 +203,7 @@ def main():
         
         for ball in balls:
             ball.draw()
-        ball.move(players)
+            ball.move(players)
         #ball.draw()
 
         court.addScore(ball.rect[0])
