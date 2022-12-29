@@ -149,7 +149,7 @@ def main():
     court = Field(gameDisplay, 8,98, 782, 492, 2)
     court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
-    player2 = Paddle(gameDisplay, 750, 250, paddleWidth, paddleHeight)
+    player2 = Paddle(gameDisplay, 740, 250, paddleWidth, paddleHeight)
     ball0 = Ball(gameDisplay, 400, 295, 1, 1)
     players = [player1, player2]
     balls = [ball0]
