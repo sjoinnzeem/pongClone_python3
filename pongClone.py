@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """ Pong Clone made by sjoinnzeem with pygame"""
+"""https://github.com/sjoinnzeem"""
 
 import pygame
 import random
@@ -45,7 +46,6 @@ class Field:
         scoretext=font.render(str(self.player1Score) + ' : '  + str(self.player2Score), 1, (255, 255, 255))
         self.gameDisplay.blit(scoretext, (350, 20))
         
-
 class Paddle(object):
     """Holds size and position of the paddle also moves and draws it to the display"""
     def __init__(self, gameDisplay, paddleXPos, paddleYPos, paddleWidth, paddleHeight):
@@ -113,9 +113,8 @@ class Ball(object):
                 self.xDirection = self.xDirection
                 self.yDirection = -self.yDirection
             elif self.ballXPos >= 51 or self.ballXPos <=751:
-              self.xDirection = -self.xDirection
+                self.xDirection = -self.xDirection
         
-
     def reset(self):
         """Resets the ball to start position"""
         self.ballXPos = self.ballStartXPos
@@ -158,9 +157,9 @@ def main():
     player2.draw()
     ball0.draw()
 
-    print(randint(0, 10))
-    
-    while not gameExit:                 #Main game loop
+    #print(randint(0, 10))
+    """    Main game loop   """
+    while not gameExit:
         for event in pygame.event.get():        #Event handler
             if event.type == pygame.QUIT:
                 gameExit = True
@@ -194,29 +193,24 @@ def main():
 
         gameDisplay.fill((0, 0, 0))
         court.draw()
-
         court.drawScore()
-        pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
-
+        #pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 
         for player in players:
             player.draw()
            
         for ball in balls:
-            if 20 > ball.rect[0] < 750 and len(balls) > 1:
-                #if ball.rect[0] <= 20 and len(balls) > 1:
-                print(ball)
-                balls.remove(ball)
+            if ball.rect[0] < 20 or ball.rect[0] > 770:
+                court.addScore(ball.rect[0])
+                if len(balls) > 1:
+                    balls.remove(ball)
             ball.draw()
             ball.move(players)
-        #ball.draw()
 
-        court.addScore(ball.rect[0])
         pygame.display.update()
         clock.tick(30)
     pygame.quit()
     quit()
-
     
 if __name__ == "__main__":
     main()
