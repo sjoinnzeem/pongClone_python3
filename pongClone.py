@@ -169,6 +169,7 @@ def main():
                     gameExit = True
                 elif event.key == pygame.K_LEFT:
                     xPos -= 5
+                    print(len(balls))
                 elif event.key == pygame.K_RIGHT:
                     xPos += 5
                     balls.append(Ball(gameDisplay, 400, 295, 1, 1))
@@ -200,8 +201,12 @@ def main():
 
         for player in players:
             player.draw()
-        
+           
         for ball in balls:
+            if 20 > ball.rect[0] < 750 and len(balls) > 1:
+                #if ball.rect[0] <= 20 and len(balls) > 1:
+                print(ball)
+                balls.remove(ball)
             ball.draw()
             ball.move(players)
         #ball.draw()
