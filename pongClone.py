@@ -137,6 +137,7 @@ def texts(gameDisplay, score):
 
 def main():
     """Pong Clone that uses pygame"""
+    """Setup variabels, values and classes"""
     pygame.init()
     windowSetup()
     clock = pygame.time.Clock()
@@ -157,7 +158,7 @@ def main():
     player2.draw()
     ball0.draw()
 
-    #print(randint(0, 10))
+    print(randint(-1, 1))
     """    Main game loop   """
     while not gameExit:
         for event in pygame.event.get():        #Event handler
@@ -167,28 +168,36 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     gameExit = True
                 elif event.key == pygame.K_LEFT:
-                    xPos -= 5
+                    #xPos -= 5
                     print(len(balls))
                 elif event.key == pygame.K_RIGHT:
-                    xPos += 5
-                    balls.append(Ball(gameDisplay, 400, 295, 1, 1))
+                    #xPos += 5
+                    balls.append(Ball(gameDisplay, 400, 295, random.choice([-1, 1]), random.choice([-1, 1]))
                 elif event.key == pygame.K_UP:
-                    yPos -= 5
+                    #yPos -= 5
                     player1.move(-5)
                     player2.move(-5)
                 elif event.key == pygame.K_DOWN:
-                    yPos += 5
+                    #yPos += 5
                     player1.move(5)
                     player2.move(5)
+                elif event.key == pygame.K_s:
+                    player1.move(-5)
+                elif event.key == pygame.K_z:
+                    player1.move(5)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
-                    yPos -= 5
+                    #yPos -= 5
                     player1.move(0)
                     player2.move(0)
                 elif event.key == pygame.K_DOWN:
-                    yPos += 5
+                    #yPos += 5
                     player1.move(0)
                     player2.move(0)
+                elif event.key == pygame.K_s:
+                    player1.move(0)
+                elif event.key == pygame.K_z:
+                    player1.move(0)
                 
 
         gameDisplay.fill((0, 0, 0))
@@ -204,6 +213,7 @@ def main():
                 court.addScore(ball.rect[0])
                 if len(balls) > 1:
                     balls.remove(ball)
+                    print(random.choice([-1, 1]))
             ball.draw()
             ball.move(players)
 
