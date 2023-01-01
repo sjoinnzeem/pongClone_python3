@@ -172,7 +172,8 @@ def main():
                     print(len(balls))
                 elif event.key == pygame.K_RIGHT:
                     #xPos += 5
-                    balls.append(Ball(gameDisplay, 400, 295, random.choice([-1, 1]), random.choice([-1, 1]))
+                    randDir = random.choice([-2, -1, 1, 2])
+                    balls.append(Ball(gameDisplay, 400, 295, randDir, random.choice([-1, 1])))
                 elif event.key == pygame.K_UP:
                     #yPos -= 5
                     player1.move(-5)
@@ -209,7 +210,7 @@ def main():
             player.draw()
            
         for ball in balls:
-            if ball.rect[0] < 20 or ball.rect[0] > 770:
+            if ball.rect[0] < 25 or ball.rect[0] > 770:
                 court.addScore(ball.rect[0])
                 if len(balls) > 1:
                     balls.remove(ball)
