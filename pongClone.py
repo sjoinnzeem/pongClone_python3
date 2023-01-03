@@ -122,10 +122,11 @@ class Ball(object):
             elif self.ballXPos >= 51 or self.ballXPos <=751:
                 self.xDirection = -self.xDirection
 
-    def move1(self, obstacles):
+    def move1(self, obstacles, pointReset):
         """Direction and speed of the ball"""
         self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
         self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
+        self.score = pointReset
         if self.ballXPos >= 780:
             print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
@@ -174,6 +175,12 @@ def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
     scoretext=font.render("Score:"+str(score), 1,(255,255,255))
     gameDisplay.blit(scoretext, (500, 457))
+
+def ballRemoval():
+    """Removes extra balls from the court"""
+    if ball.rect[0] < 20 or ball.rect[0] > 770:
+        if len(balls) > 1:
+            balls.remove(ball)
 
 def main():
     """Pong Clone that uses pygame"""
@@ -241,20 +248,19 @@ def main():
            
         for ball in balls:
             if ball.score == 1:
-                print(str(ball.score))
                 court.addScore(1)
-                #ball.reset()
+            #    if len(balls) > 1:
+            #        balls.remove(ball)
             elif ball.score == 2:
-                print(str(ball.score))
                 court.addScore(2)
-                #ball.reset()
             
             #court.addScore(ball.rect[0])
             #if ball.rect[0] < 20 or ball.rect[0] > 770:
-            #    if len(balls) > 1:
-            #        balls.remove(ball)
+            if ball.score > 0:
+                if len(balls) > 1:
+                    balls.remove(ball)
                     #print(ball.score)
-            ball.move1(players)
+            ball.move1(players, 0)
             ball.draw()
             
 
