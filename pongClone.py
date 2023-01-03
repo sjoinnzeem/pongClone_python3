@@ -35,9 +35,9 @@ class Field:
 
     def addScore(self, ballPosition):
         """Add a score to the current standing in the match"""
-        if ballPosition >= 775:
+        if ballPosition >= 780:
             self.player1Score += 1
-        elif ballPosition <= 15:
+        elif ballPosition <= 20:
             self.player2Score += 1
     
     def drawScore(self):
@@ -84,8 +84,9 @@ class Ball(object):
         self.gameDisplay = gameDisplay
         self.xDirection = xDirection
         self.yDirection = yDirection
-        self.xSpeed = 5
-        self.ySpeed = 5
+        self.xSpeed = 3
+        self.ySpeed = 3
+        self.score = 0
 
     def draw(self):
         """Draws the ball to the screen"""
@@ -114,6 +115,35 @@ class Ball(object):
                 self.yDirection = -self.yDirection
             elif self.ballXPos >= 51 or self.ballXPos <=751:
                 self.xDirection = -self.xDirection
+
+    def move1(self, obstacles):
+        """Direction and speed of the ball"""
+        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
+        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
+        if self.ballXPos >= 780:
+            print('xPos= ' + str(self.ballXPos))
+            self.xDirection = -self.xDirection
+            self.score = 2
+            print(str(self.score))
+            self.reset()
+        elif self.ballXPos <= 10:
+            print('xPos= ' + str(self.ballXPos))
+            self.xDirection = -self.xDirection
+            self.score = 1
+            print(str(self.score))
+            self.reset()
+        if self.ballYPos >= 580:
+            self.yDirection = -self.yDirection
+        elif self.ballYPos <= 100:
+            self.yDirection = -self.yDirection
+        if self.rect.collidelist(obstacles) != -1:
+            """collition between ball and paddle"""
+            if self.ballXPos <= 50 or self.ballXPos >= 750:
+                self.xDirection = self.xDirection
+                self.yDirection = -self.yDirection
+            elif self.ballXPos >= 51 or self.ballXPos <=751:
+                self.xDirection = -self.xDirection
+        return self.score
         
     def reset(self):
         """Resets the ball to start position"""
@@ -122,7 +152,10 @@ class Ball(object):
 
     @property
     def rect(self):
-        return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10)
+        return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10,)
+
+    def score(self):
+        return self.score
     
 def windowSetup():
     """Setting all initial variables and functions for start up"""
@@ -150,7 +183,7 @@ def main():
     court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
     player2 = Paddle(gameDisplay, 740, 250, paddleWidth, paddleHeight)
-    ball0 = Ball(gameDisplay, 400, 295, 1, 1)
+    ball0 = Ball(gameDisplay, 400, 295, 1, 1) #add random for direction
     players = [player1, player2]
     balls = [ball0]
     player1.draw()
@@ -200,12 +233,17 @@ def main():
             player.draw()
            
         for ball in balls:
-            if ball.rect[0] < 20 or ball.rect[0] > 770:
-                court.addScore(ball.rect[0])
-                if len(balls) > 1:
-                    balls.remove(ball)
+            if ball.score == 1:
+                print(str(ball.score))
+            elif ball.score == 2:
+                print(str(ball.score))
+            court.addScore(ball.rect[0])
+            #if ball.rect[0] < 20 or ball.rect[0] > 770:
+            #    if len(balls) > 1:
+            #        balls.remove(ball)
+                    #print(ball.score)
             ball.draw()
-            ball.move(players)
+            ball.move1(players)
 
         pygame.display.update()
         clock.tick(60)
