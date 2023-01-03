@@ -30,14 +30,14 @@ class Field:
 
     def score(self, player1Score, player2Score):
         """Handels the score of the players"""
-        self.player1Score = player1Score
-        self.player2Score = player2Score
+        self.player1Score = player1Score 
+        self.player2Score = player2Score 
 
-    def addScore(self, ballPosition):
+    def addScore(self, addScoreToPlayer):
         """Add a score to the current standing in the match"""
-        if ballPosition >= 775:
+        if addScoreToPlayer == 1:
             self.player1Score += 1
-        elif ballPosition <= 15:
+        elif addScoreToPlayer == 2:
             self.player2Score += 1
     
     def drawScore(self):
@@ -86,22 +86,29 @@ class Ball(object):
         self.yDirection = yDirection
         self.xSpeed = 5
         self.ySpeed = 5
-
+        """Prepare fore scoring"""
+        self.score = 0
+        
     def draw(self):
         """Draws the ball to the screen"""
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.ballXPos, self.ballYPos, 10, 10])
 
-    def move(self, obstacles):
+    def move(self, obstacles, pointReset):
         """Direction and speed of the ball"""
         self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
         self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
+        self.score = pointReset
         if self.ballXPos >= 780:
             print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
+            self.score = 2
+            #print(str(self.score))
             self.reset()
         elif self.ballXPos <= 10:
             print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
+            self.score = 1
+            #print(str(self.score))
             self.reset()
         if self.ballYPos >= 580:
             self.yDirection = -self.yDirection
@@ -122,7 +129,11 @@ class Ball(object):
 
     @property
     def rect(self):
-        return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10)
+        return pygame.Rect(self.ballXPos, self.ballYPos, 10, 10,)
+
+    def score(self):
+        return self.score
+        
     
 def windowSetup():
     """Setting all initial variables and functions for start up"""
@@ -134,6 +145,13 @@ def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
     scoretext=font.render("Score:"+str(score), 1,(255,255,255))
     gameDisplay.blit(scoretext, (500, 457))
+
+def ballRemoval():
+    """Not yet implemented"""
+    """Removes extra balls from the court"""
+    if ball.rect[0] < 20 or ball.rect[0] > 770:
+        if len(balls) > 1:
+            balls.remove(ball)
 
 def main():
     """Pong Clone that uses pygame"""
@@ -151,7 +169,7 @@ def main():
     court.score(0, 0)
     player1 = Paddle(gameDisplay, 50, 250, paddleWidth, paddleHeight)
     player2 = Paddle(gameDisplay, 740, 250, paddleWidth, paddleHeight)
-    ball0 = Ball(gameDisplay, 400, 295, 1, 1)
+    ball0 = Ball(gameDisplay, 400, 295, 1, 1) #add random for direction
     players = [player1, player2]
     balls = [ball0]
     player1.draw()
@@ -200,26 +218,33 @@ def main():
                 elif event.key == pygame.K_z:
                     player1.move(0)
                 
-
         gameDisplay.fill((0, 0, 0))
         court.draw()
         court.drawScore()
-        #pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 
         for player in players:
             player.draw()
            
         for ball in balls:
-            if ball.rect[0] < 25 or ball.rect[0] > 770:
-                court.addScore(ball.rect[0])
+            if ball.score == 1:
+                court.addScore(1)
+            #    if len(balls) > 1:
+            #        balls.remove(ball)
+            elif ball.score == 2:
+                court.addScore(2)
+            
+            #court.addScore(ball.rect[0])
+            #if ball.rect[0] < 20 or ball.rect[0] > 770:
+            if ball.score > 0:
                 if len(balls) > 1:
                     balls.remove(ball)
-                    print(random.choice([-1, 1]))
+                    #print(ball.score)
+            ball.move(players, 0)
             ball.draw()
-            ball.move(players)
+            
 
         pygame.display.update()
-        clock.tick(30)
+        clock.tick(60)
     pygame.quit()
     quit()
     
