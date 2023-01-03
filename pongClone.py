@@ -93,31 +93,7 @@ class Ball(object):
         """Draws the ball to the screen"""
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.ballXPos, self.ballYPos, 10, 10])
 
-    def move(self, obstacles):
-        """Direction and speed of the ball"""
-        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
-        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
-        if self.ballXPos >= 780:
-            print('xPos= ' + str(self.ballXPos))
-            self.xDirection = -self.xDirection
-            self.reset()
-        elif self.ballXPos <= 10:
-            print('xPos= ' + str(self.ballXPos))
-            self.xDirection = -self.xDirection
-            self.reset()
-        if self.ballYPos >= 580:
-            self.yDirection = -self.yDirection
-        elif self.ballYPos <= 100:
-            self.yDirection = -self.yDirection
-        if self.rect.collidelist(obstacles) != -1:
-            """collition between ball and paddle"""
-            if self.ballXPos <= 50 or self.ballXPos >= 750:
-                self.xDirection = self.xDirection
-                self.yDirection = -self.yDirection
-            elif self.ballXPos >= 51 or self.ballXPos <=751:
-                self.xDirection = -self.xDirection
-
-    def move1(self, obstacles, pointReset):
+    def move(self, obstacles, pointReset):
         """Direction and speed of the ball"""
         self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
         self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
@@ -171,6 +147,7 @@ def texts(gameDisplay, score):
     gameDisplay.blit(scoretext, (500, 457))
 
 def ballRemoval():
+    """Not yet implemented"""
     """Removes extra balls from the court"""
     if ball.rect[0] < 20 or ball.rect[0] > 770:
         if len(balls) > 1:
@@ -252,7 +229,7 @@ def main():
                 if len(balls) > 1:
                     balls.remove(ball)
                     #print(ball.score)
-            ball.move1(players, 0)
+            ball.move(players, 0)
             ball.draw()
             
 
