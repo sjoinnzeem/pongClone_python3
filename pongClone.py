@@ -30,14 +30,14 @@ class Field:
 
     def score(self, player1Score, player2Score):
         """Handels the score of the players"""
-        self.player1Score = player1Score
-        self.player2Score = player2Score
+        self.player1Score = player1Score 
+        self.player2Score = player2Score 
 
-    def addScore(self, ballPosition):
+    def addScore(self, addScoreToPlayer):
         """Add a score to the current standing in the match"""
-        if ballPosition >= 780:
+        if addScoreToPlayer == 1:
             self.player1Score += 1
-        elif ballPosition <= 20:
+        elif addScoreToPlayer == 2:
             self.player2Score += 1
     
     def drawScore(self):
@@ -86,7 +86,13 @@ class Ball(object):
         self.yDirection = yDirection
         self.xSpeed = 3
         self.ySpeed = 3
+        """Prepare fore scoring"""
         self.score = 0
+        #if xDirection > 0:
+        #    self.score = 2
+        #elif xDirection < 0:
+        #    self.score = 1
+        
 
     def draw(self):
         """Draws the ball to the screen"""
@@ -124,13 +130,13 @@ class Ball(object):
             print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.score = 2
-            print(str(self.score))
+            #print(str(self.score))
             self.reset()
         elif self.ballXPos <= 10:
             print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.score = 1
-            print(str(self.score))
+            #print(str(self.score))
             self.reset()
         if self.ballYPos >= 580:
             self.yDirection = -self.yDirection
@@ -143,7 +149,7 @@ class Ball(object):
                 self.yDirection = -self.yDirection
             elif self.ballXPos >= 51 or self.ballXPos <=751:
                 self.xDirection = -self.xDirection
-        return self.score
+        #return self.score
         
     def reset(self):
         """Resets the ball to start position"""
@@ -156,6 +162,7 @@ class Ball(object):
 
     def score(self):
         return self.score
+        
     
 def windowSetup():
     """Setting all initial variables and functions for start up"""
@@ -235,15 +242,21 @@ def main():
         for ball in balls:
             if ball.score == 1:
                 print(str(ball.score))
+                court.addScore(1)
+                #ball.reset()
             elif ball.score == 2:
                 print(str(ball.score))
-            court.addScore(ball.rect[0])
+                court.addScore(2)
+                #ball.reset()
+            
+            #court.addScore(ball.rect[0])
             #if ball.rect[0] < 20 or ball.rect[0] > 770:
             #    if len(balls) > 1:
             #        balls.remove(ball)
                     #print(ball.score)
-            ball.draw()
             ball.move1(players)
+            ball.draw()
+            
 
         pygame.display.update()
         clock.tick(60)
