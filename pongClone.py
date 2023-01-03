@@ -99,16 +99,12 @@ class Ball(object):
         self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
         self.score = pointReset
         if self.ballXPos >= 780:
-            print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.score = 2
-            #print(str(self.score))
             self.reset()
         elif self.ballXPos <= 10:
-            print('xPos= ' + str(self.ballXPos))
             self.xDirection = -self.xDirection
             self.score = 1
-            #print(str(self.score))
             self.reset()
         if self.ballYPos >= 580:
             self.yDirection = -self.yDirection
@@ -133,8 +129,7 @@ class Ball(object):
 
     def score(self):
         return self.score
-        
-    
+           
 def windowSetup():
     """Setting all initial variables and functions for start up"""
     pygame.display.set_caption('Pong Clone')
@@ -145,13 +140,6 @@ def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
     scoretext=font.render("Score:"+str(score), 1,(255,255,255))
     gameDisplay.blit(scoretext, (500, 457))
-
-def ballRemoval():
-    """Not yet implemented"""
-    """Removes extra balls from the court"""
-    if ball.rect[0] < 20 or ball.rect[0] > 770:
-        if len(balls) > 1:
-            balls.remove(ball)
 
 def main():
     """Pong Clone that uses pygame"""
@@ -176,7 +164,6 @@ def main():
     player2.draw()
     ball0.draw()
 
-    print(randint(-1, 1))
     """    Main game loop   """
     while not gameExit:
         for event in pygame.event.get():        #Event handler
@@ -186,18 +173,14 @@ def main():
                 if event.key == pygame.K_ESCAPE:
                     gameExit = True
                 elif event.key == pygame.K_LEFT:
-                    #xPos -= 5
                     print(len(balls))
                 elif event.key == pygame.K_RIGHT:
-                    #xPos += 5
                     randDir = random.choice([-2, -1, 1, 2])
                     balls.append(Ball(gameDisplay, 400, 295, randDir, random.choice([-1, 1])))
                 elif event.key == pygame.K_UP:
-                    #yPos -= 5
                     player1.move(-5)
                     player2.move(-5)
                 elif event.key == pygame.K_DOWN:
-                    #yPos += 5
                     player1.move(5)
                     player2.move(5)
                 elif event.key == pygame.K_s:
@@ -206,11 +189,9 @@ def main():
                     player1.move(5)
             if event.type == pygame.KEYUP:
                 if event.key == pygame.K_UP:
-                    #yPos -= 5
                     player1.move(0)
                     player2.move(0)
                 elif event.key == pygame.K_DOWN:
-                    #yPos += 5
                     player1.move(0)
                     player2.move(0)
                 elif event.key == pygame.K_s:
@@ -223,26 +204,22 @@ def main():
         court.drawScore()
 
         for player in players:
+            """Actions for all the players on the court"""
             player.draw()
            
         for ball in balls:
+            """Actions for all the balls on the court"""
             if ball.score == 1:
                 court.addScore(1)
-            #    if len(balls) > 1:
-            #        balls.remove(ball)
             elif ball.score == 2:
                 court.addScore(2)
-            
-            #court.addScore(ball.rect[0])
-            #if ball.rect[0] < 20 or ball.rect[0] > 770:
             if ball.score > 0:
                 if len(balls) > 1:
                     balls.remove(ball)
-                    #print(ball.score)
+            else:
+                ball.draw()
             ball.move(players, 0)
-            ball.draw()
             
-
         pygame.display.update()
         clock.tick(60)
     pygame.quit()
