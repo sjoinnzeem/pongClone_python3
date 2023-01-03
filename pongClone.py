@@ -84,16 +84,11 @@ class Ball(object):
         self.gameDisplay = gameDisplay
         self.xDirection = xDirection
         self.yDirection = yDirection
-        self.xSpeed = 3
-        self.ySpeed = 3
+        self.xSpeed = 5
+        self.ySpeed = 5
         """Prepare fore scoring"""
         self.score = 0
-        #if xDirection > 0:
-        #    self.score = 2
-        #elif xDirection < 0:
-        #    self.score = 1
         
-
     def draw(self):
         """Draws the ball to the screen"""
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.ballXPos, self.ballYPos, 10, 10])
@@ -150,7 +145,6 @@ class Ball(object):
                 self.yDirection = -self.yDirection
             elif self.ballXPos >= 51 or self.ballXPos <=751:
                 self.xDirection = -self.xDirection
-        #return self.score
         
     def reset(self):
         """Resets the ball to start position"""
@@ -237,11 +231,9 @@ def main():
                     player1.move(0)
                     player2.move(0)
                 
-
         gameDisplay.fill((0, 0, 0))
         court.draw()
         court.drawScore()
-        #pygame.draw.rect(gameDisplay, (255, 0, 0), [xPos, yPos, 10, 10], 2)        
 
         for player in players:
             player.draw()
