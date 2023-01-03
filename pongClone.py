@@ -112,6 +112,7 @@ class Ball(object):
             self.yDirection = -self.yDirection
         if self.rect.collidelist(obstacles) != -1:
             """collition between ball and paddle"""
+            """ NOT WORKING PROPERLY """
             if self.ballXPos <= 50 or self.ballXPos >= 750:
                 self.xDirection = self.xDirection
                 self.yDirection = -self.yDirection
