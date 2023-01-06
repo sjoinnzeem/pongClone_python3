@@ -93,12 +93,13 @@ class Ball(object):
         """Draws the ball to the screen"""
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.ballXPos, self.ballYPos, 10, 10])
 
-    def move(self, obstacles, pointReset, collitionDetected):
+    def move(self, pointReset, xCollitionDetected, yCollitionDetected):
         """Direction and speed of the ball"""
         self.score = pointReset
-        self.collitionDetected = collitionDetected
-        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection * self.collitionDetected)
-        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
+        self.xCollitionDetected = xCollitionDetected
+        self.yCollitionDetected = yCollitionDetected
+        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection * self.xCollitionDetected)
+        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection * self.yCollitionDetected)
         
         if self.ballXPos >= 780:
             self.xDirection = -self.xDirection
@@ -175,7 +176,7 @@ def main():
     clock = pygame.time.Clock()
     gameExit = False
     gameDisplay = pygame.display.set_mode((800, 600))
-    paddleWidth = 10
+    paddleWidth = 100
     paddleHeight = 100
     xPos = 400
     yPos = 300
@@ -189,7 +190,8 @@ def main():
     player1.draw()
     player2.draw()
     ball0.draw()
-    collition = 1
+    xCollition = 1
+    yCollition = 1
 
     """    Main game loop   """
     while not gameExit:
@@ -237,31 +239,35 @@ def main():
         for ball in balls:
             """Actions for all the balls on the court"""
 
-            ballDir = ball.direction()
+            #ballDir = ball.direction() #gets a list of xDirection and yDirection of the ball
             if ball.rect.colliderect(players[0]):
                 print('colliding')
-                if abs(ball.rect.right - players[0].rect.left) < 15 and ballDir[0] < 0:
+                if abs(ball.rect.left - players[0].rect.right) < 15:
                     print('right edge')
-                    collition *= -1
+                    xCollition *= -1
                 #elif abs(ball.rect.left - players[0].rect.right) < 10:
                 #    print('left edge')
                 #    collition *= -1 
-                elif abs(ball.rect.bottom - players[0].rect.top) < 10:
+                elif abs(ball.rect.bottom - players[0].rect.top) < 15:
                     print('bottom edge')
-                elif abs(ball.rect.top - players[0].rect.bottom) < 10:
+                    yCollition *= -1
+                elif abs(ball.rect.top - players[0].rect.bottom) < 15:
                     print('top edge')
+                    yCollition *= -1
             if ball.rect.colliderect(players[1]):
                 print('colliding')
                 #if abs(ball.rect.right - players[1].rect.left) < 10:
                 #    print('right edge')
                 #    collition *= -1
-                if abs(ball.rect.left - players[1].rect.right) < 15:
+                if abs(ball.rect.right - players[1].rect.left) < 15:
                     print('left edge')
-                    collition *= -1 
-                elif abs(ball.rect.bottom - players[1].rect.top) < 10:
+                    xCollition *= -1 
+                elif abs(ball.rect.bottom - players[1].rect.top) < 15:
                     print('bottom edge')
-                elif abs(ball.rect.top - players[1].rect.bottom) < 10:
+                    yCollition *= -1
+                elif abs(ball.rect.top - players[1].rect.bottom) < 15:
                     print('top edge')
+                    yCollition *= -1
                 
             if ball.score == 1:
                 court.addScore(1)
@@ -272,7 +278,7 @@ def main():
                     balls.remove(ball)
             else:
                 ball.draw()
-            ball.move(players, 0, collition)   
+            ball.move(0, xCollition, yCollition)   
                            
             """if ball.rect.colliderect(players[0]) and ball.direction[0] > 0:
                 if abs(ball.rect.right - players[0].rect.left) < 10:
