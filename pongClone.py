@@ -93,11 +93,13 @@ class Ball(object):
         """Draws the ball to the screen"""
         pygame.draw.rect(self.gameDisplay, (255, 0, 0), [self.ballXPos, self.ballYPos, 10, 10])
 
-    def move(self, obstacles, pointReset):
+    def move(self, obstacles, pointReset, collitionDetected):
         """Direction and speed of the ball"""
-        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection)
-        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
         self.score = pointReset
+        self.collitionDetected = collitionDetected
+        self.ballXPos = self.ballXPos + (self.xSpeed * self.xDirection * self.collitionDetected)
+        self.ballYPos = self.ballYPos + (self.ySpeed * self.yDirection)
+        
         if self.ballXPos >= 780:
             self.xDirection = -self.xDirection
             self.score = 2
@@ -110,14 +112,18 @@ class Ball(object):
             self.yDirection = -self.yDirection
         elif self.ballYPos <= 100:
             self.yDirection = -self.yDirection
-        if self.rect.collidelist(obstacles) != -1:
+        #if self.rect.colliderect(obstacles):
+            #print('colliding')
+            #sur_obj.fill((0,0,0)) 
+     
+        #if self.rect.collidelist(obstacles) != -1:
             """collition between ball and paddle"""
             """ NOT WORKING PROPERLY """
-            if self.ballXPos <= 50 or self.ballXPos >= 750:
+            """if self.ballXPos <= 50 or self.ballXPos >= 750:
                 self.xDirection = self.xDirection
                 self.yDirection = -self.yDirection
             elif self.ballXPos >= 51 or self.ballXPos <=751:
-                self.xDirection = -self.xDirection
+                self.xDirection = -self.xDirection"""
         
     def reset(self):
         """Resets the ball to start position"""
@@ -130,6 +136,10 @@ class Ball(object):
 
     def score(self):
         return self.score
+
+    def direction(self):
+       ballDir = [self.xDirection, self.yDirection] 
+       return ballDir
            
 def windowSetup():
     """Setting all initial variables and functions for start up"""
@@ -141,6 +151,21 @@ def texts(gameDisplay, score):
     font=pygame.font.Font(None,30)
     scoretext=font.render("Score:"+str(score), 1,(255,255,255))
     gameDisplay.blit(scoretext, (500, 457))
+
+def collitionDetection():
+    """Not implemented yet
+    if ball.rect.colliderect(players[0]):
+        print('colliding')
+        if abs(ball.rect.right - players[0].rect.left) < 10:
+            print('right edge')
+            #ball.ballDir
+        elif abs(ball.rect.bottom - players[0].rect.top) < 10:
+            print('bottom edge')
+        elif abs(ball.rect.top - players[0].rect.bottom) < 10:
+            print('top edge')
+        elif abs(ball.rect.left - players[0].rect.right) < 10:
+            print('left edge') """
+
 
 def main():
     """Pong Clone that uses pygame"""
@@ -164,6 +189,7 @@ def main():
     player1.draw()
     player2.draw()
     ball0.draw()
+    collition = 1
 
     """    Main game loop   """
     while not gameExit:
@@ -210,6 +236,33 @@ def main():
            
         for ball in balls:
             """Actions for all the balls on the court"""
+
+            ballDir = ball.direction()
+            if ball.rect.colliderect(players[0]):
+                print('colliding')
+                if abs(ball.rect.right - players[0].rect.left) < 15 and ballDir[0] < 0:
+                    print('right edge')
+                    collition *= -1
+                #elif abs(ball.rect.left - players[0].rect.right) < 10:
+                #    print('left edge')
+                #    collition *= -1 
+                elif abs(ball.rect.bottom - players[0].rect.top) < 10:
+                    print('bottom edge')
+                elif abs(ball.rect.top - players[0].rect.bottom) < 10:
+                    print('top edge')
+            if ball.rect.colliderect(players[1]):
+                print('colliding')
+                #if abs(ball.rect.right - players[1].rect.left) < 10:
+                #    print('right edge')
+                #    collition *= -1
+                if abs(ball.rect.left - players[1].rect.right) < 15:
+                    print('left edge')
+                    collition *= -1 
+                elif abs(ball.rect.bottom - players[1].rect.top) < 10:
+                    print('bottom edge')
+                elif abs(ball.rect.top - players[1].rect.bottom) < 10:
+                    print('top edge')
+                
             if ball.score == 1:
                 court.addScore(1)
             elif ball.score == 2:
@@ -219,7 +272,12 @@ def main():
                     balls.remove(ball)
             else:
                 ball.draw()
-            ball.move(players, 0)
+            ball.move(players, 0, collition)   
+                           
+            """if ball.rect.colliderect(players[0]) and ball.direction[0] > 0:
+                if abs(ball.rect.right - players[0].rect.left) < 10:
+                    #ball_speed_x *= -1
+                    print('test')"""
             
         pygame.display.update()
         clock.tick(60)
